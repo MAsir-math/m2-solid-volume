@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-app="m2-solid-volume">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ebe6dc">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23ebe6dc' width='32' height='32'/%3E%3Cpath d='M4 22h24' stroke='%231f5a43' stroke-width='1.5' fill='none'/%3E%3Cellipse cx='16' cy='22' rx='8' ry='3.2' fill='%237eaf97' fill-opacity='.55' stroke='%231f5a43' stroke-width='1.2'/%3E%3Cpath d='M8 22c1-9 4-13 8-13s7 4 8 13' fill='none' stroke='%231f5a43' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<title>旋轉體積實驗室｜馬Sir教室 · 中五 M2 · §10.2</title>
+<!--
+  KaTeX (MIT), JSXGraph (LGPL-3.0) and Three.js (MIT) via jsDelivr, suitable for Hong Kong classroom networks.
+  Fallback (comment only):
+    https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.21/katex.min.css
+    https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.21/katex.min.js
+    https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.11.1/jsxgraph.css
+    https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.11.1/jsxgraphcore.js
+    https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.js
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.11.1/distrib/jsxgraph.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.2.9/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.2.9/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@5.2.9/700.css">
+<style>
+:root {
+  --ground: #ebe6dc;
+  --surface: #f6f3eb;
+  --board: #fbf8f1;
+  --ink: #1c1b16;
+  --muted: #534f46;
+  --faint: #6a655c;
+  --line: #d4cfc3;
+  --rule: #e4dfd4;
+  --accent: #1f5a43;
+  --above: #1f5a43;
+  --above-fill: #7eaf97;
+  --below: #8a3a2a;
+  --below-fill: #d4a090;
+  --swap: #6b4d12;
+  --swap-fill: #d2bc76;
+  --faint-curve: #9a9488;
+  --pos-bg: #e3efe8;
+  --pos-ink: #0e3a2a;
+  --neg-bg: #f6e4e0;
+  --neg-ink: #6e2418;
+  --warn-bg: #f4e6c2;
+  --warn-ink: #5c4308;
+  --warn-line: #e0c984;
+  --radius: 8px;
+  --font: "Noto Sans TC", "PingFang HK", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--ground); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.5; }
+body { min-height: 100dvh; }
+::selection { background: #c8ddd3; color: var(--ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button, select, summary, input { font-family: inherit; }
+button { cursor: pointer; }
+.num { font-variant-numeric: tabular-nums; }
+
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 16px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100dvh;
+}
+
+.top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.mark { flex: none; width: 36px; height: 36px; margin-top: 2px; color: var(--accent); }
+.brand-text h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.brand-text .sub {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.modes {
+  display: inline-flex;
+  flex-wrap: wrap;
+  background: #ddd8cc;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.modes button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.modes button[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--ink);
+}
+.modes button:hover { color: var(--ink); }
+
+.main {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.38fr);
+  gap: 16px;
+  align-items: start;
+  flex: 1;
+}
+.stage, .side {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px 18px;
+}
+.stage { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.stage-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.preset-kicker {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.legend {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  align-items: center;
+}
+.swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  box-shadow: inset 0 0 0 1px rgba(28,27,22,.18);
+}
+
+.views { display: grid; gap: 10px; min-width: 0; }
+.views.both { grid-template-columns: 1fr 1fr; }
+.views.only2d .view-3d,
+.views.only3d .view-2d { display: none; }
+.view-2d, .view-3d {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.view-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+#box.jxgbox {
+  width: 100%;
+  height: min(46vh, 480px);
+  min-height: 280px;
+  background: var(--board);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.views.only2d #box.jxgbox,
+.views.only3d .canvas-wrap {
+  height: min(62vh, 600px);
+  min-height: 340px;
+}
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: min(46vh, 480px);
+  min-height: 280px;
+  background: var(--board);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+#view3d {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.axis-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.axis-tag {
+  position: absolute;
+  transform: translate(-50%, -120%);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fbf8f1cc;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 5px;
+  line-height: 1.4;
+}
+.reset-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.reset-btn:hover { border-color: var(--accent); }
+.drag-hint {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--faint);
+  pointer-events: none;
+}
+
+.side { display: flex; flex-direction: column; gap: 14px; }
+.field-label {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+#preset {
+  width: 100%;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 15px;
+  padding: 0 12px;
+}
+
+.seg {
+  display: flex;
+  background: #ddd8cc;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  min-height: 40px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  flex: 1;
+}
+.seg button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--ink);
+}
+.seg button:hover { color: var(--ink); }
+
+.stem {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+.prompt {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.slider-row { display: flex; flex-direction: column; gap: 4px; }
+.slider-row .row-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.slider-row input[type=range] {
+  width: 100%;
+  height: 28px;
+  accent-color: var(--accent);
+}
+.play-row { display: flex; gap: 8px; align-items: center; }
+.play-row button {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.play-row button[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.checks { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.checks label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.checks input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+.scaffold { display: flex; flex-direction: column; gap: 10px; }
+.sc-item {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+}
+.sc-item p { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+.sc-opts { display: flex; flex-direction: column; gap: 6px; }
+.sc-opts button {
+  appearance: none;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 6px;
+  min-height: 40px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+.sc-opts button:hover { border-color: var(--accent); }
+.sc-opts button[data-state="right"] {
+  background: var(--pos-bg);
+  border-color: #9cc4b5;
+  color: var(--pos-ink);
+}
+.sc-opts button[data-state="wrong"] {
+  background: var(--neg-bg);
+  border-color: #e0b8ae;
+  color: var(--neg-ink);
+}
+.sc-explain { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.sc-explain[hidden] { display: none; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions button, .reveal-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.actions button.primary, .reveal-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.formula { font-size: 14px; overflow-x: auto; max-width: 100%; }
+.formula .katex-display { margin: 0.4em 0; overflow-x: auto; overflow-y: hidden; }
+.slice-box {
+  padding: 8px 0 2px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 14px;
+}
+.slice-box p { margin: 0 0 4px; }
+.readouts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+.readout .lbl { margin: 0 0 2px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.readout .val {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.note {
+  margin: 0;
+  padding: 10px 12px;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border: 1px solid var(--warn-line);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.note.quiet {
+  background: var(--pos-bg);
+  color: var(--pos-ink);
+  border-color: #b7d9cf;
+}
+.note[hidden] { display: none; }
+.notes { display: flex; flex-direction: column; gap: 8px; }
+
+.tip {
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+}
+.tip summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  list-style: none;
+}
+.tip summary::-webkit-details-marker,
+.tip summary::marker { display: none; content: ""; }
+.tip summary::before {
+  content: "";
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  margin-right: 8px;
+  vertical-align: 0.15em;
+}
+.tip[open] summary::before { transform: rotate(45deg); vertical-align: 0.25em; }
+.tip .tip-body { margin: 8px 0 0; font-size: 14px; color: var(--ink); }
+.tip .tip-body p { margin: 0 0 8px; }
+.tip .tip-body p:last-child { margin-bottom: 0; }
+
+.footer {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.footer a { color: var(--accent); }
+
+.cdn-fail, .check-fail {
+  margin: 0;
+  padding: 12px;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-radius: 6px;
+}
+
+.gated[hidden], [hidden] { display: none !important; }
+
+@media (max-width: 1100px) {
+  .views.both { grid-template-columns: 1fr; }
+}
+@media (max-width: 860px) {
+  .app { padding: 12px 16px 24px; }
+  .main { grid-template-columns: 1fr; }
+  .stage { order: -1; }
+  #box.jxgbox, .canvas-wrap { height: 320px; min-height: 260px; }
+  .brand-text h1 { font-size: 22px; }
+  .modes { width: 100%; }
+  .modes button { flex: 1; padding: 8px 6px; font-size: 13px; }
+  .readout .val { font-size: 1.25rem; }
+}
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+          <path d="M3 24h30" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <ellipse cx="18" cy="24" rx="9" ry="3.4" fill="currentColor" opacity="0.28"/>
+          <path d="M9 24c1.2-11 5-16 9-16s7.8 5 9 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M18 8v16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/>
+        </svg>
+        <div class="brand-text">
+          <h1>旋轉體積實驗室</h1>
+          <p class="sub">馬Sir教室 · 中五 M2 · §10.2 旋轉體的體積</p>
+        </div>
+      </div>
+      <div class="modes" role="tablist" aria-label="模式" id="modeTabs"></div>
+    </header>
+
+    <div class="main" id="panel">
+      <aside class="side">
+        <div>
+          <label class="field-label" for="preset">例題</label>
+          <select id="preset"></select>
+        </div>
+
+        <p class="stem" id="stem"></p>
+        <p class="prompt" id="prompt"></p>
+
+        <div id="specialWrap"></div>
+
+        <div class="scaffold" id="scaffold"></div>
+
+        <div class="actions" id="actions">
+          <button type="button" class="primary" id="btnRevealIntegral">顯示積分</button>
+          <button type="button" id="btnRevealAnswer">顯示答案</button>
+          <button type="button" id="btnTeacherReveal">顯示全部（教師）</button>
+        </div>
+
+        <div class="formula gated" id="formula" hidden></div>
+        <div class="readouts gated" id="answerBox" hidden></div>
+
+        <div class="notes" id="notes"></div>
+
+        <div>
+          <p class="field-label" id="playLabel">旋轉角度</p>
+          <div class="play-row">
+            <button type="button" id="btnPlay" aria-pressed="false">播放</button>
+            <button type="button" id="btnPause">暫停</button>
+          </div>
+          <div class="slider-row" style="margin-top:8px">
+            <div class="row-top"><span>角度</span><span class="num" id="angleVal">0°</span></div>
+            <input type="range" id="angleSlider" min="0" max="360" step="1" value="0">
+          </div>
+          <div class="slider-row">
+            <div class="row-top"><span id="sliceLabel">薄片位置</span><span class="num" id="sliceVal">—</span></div>
+            <input type="range" id="sliceSlider" min="0" max="1000" step="1" value="500">
+          </div>
+        </div>
+
+        <div class="checks">
+          <label><input type="checkbox" id="chkRegion" checked> 顯示生成區域</label>
+          <label><input type="checkbox" id="chkAxis" checked> 顯示旋轉軸</label>
+          <label><input type="checkbox" id="chkSlice" checked> 顯示典型薄片</label>
+          <label><input type="checkbox" id="chkCutaway"> 剖視（看見內孔）</label>
+        </div>
+
+        <div class="slice-box" id="sliceBox"></div>
+
+        <details class="tip">
+          <summary>教師提示</summary>
+          <div class="tip-body" id="teacherTip"></div>
+        </details>
+      </aside>
+
+      <section class="stage">
+        <div class="stage-bar">
+          <p class="preset-kicker" id="presetTitle">引入</p>
+          <div>
+            <p class="field-label" id="viewToggleLabel" style="margin-bottom:6px">畫面</p>
+            <div class="seg" role="group" aria-labelledby="viewToggleLabel">
+              <button type="button" data-view="both" aria-pressed="true">同時</button>
+              <button type="button" data-view="2d" aria-pressed="false">只看 2D</button>
+              <button type="button" data-view="3d" aria-pressed="false">只看 3D</button>
+            </div>
+          </div>
+        </div>
+        <p class="legend" id="legend"></p>
+        <div class="views both" id="views">
+          <div class="view-2d">
+            <p class="view-label">生成區域（2D）</p>
+            <div id="box" class="jxgbox" role="img" aria-label="生成區域"></div>
+          </div>
+          <div class="view-3d">
+            <p class="view-label">旋轉體（3D）</p>
+            <div class="canvas-wrap">
+              <canvas id="view3d"></canvas>
+              <div class="axis-labels" id="axisLabels"></div>
+              <button type="button" class="reset-btn" id="resetView">重設視角</button>
+              <p class="drag-hint">拖曳旋轉 · 滾輪縮放</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      本頁為課堂互動工具，只做圓盤法與圓環法，不收集學生資料。立體圖由 <a href="https://threejs.org/" target="_blank" rel="noopener">Three.js</a>（MIT）繪製，平面圖由 <a href="https://jsxgraph.org/" target="_blank" rel="noopener">JSXGraph</a>（LGPL-3.0）繪製，數學式由 <a href="https://katex.org/" target="_blank" rel="noopener">KaTeX</a>（MIT）排版。馬Sir教室
+    </footer>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsxgraph@1.11.1/distrib/jsxgraphcore.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
