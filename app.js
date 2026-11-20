@@ -533,13 +533,15 @@ function estimateSolidBox(spec) {
 }
 
 function makeMat(color, opts) {
+  const transparent = !!(opts?.transparent || (opts?.opacity != null && opts.opacity < 1));
   return new THREE.MeshStandardMaterial({
     color,
     roughness: 0.48,
     metalness: 0.04,
     side: THREE.DoubleSide,
-    transparent: !!opts?.transparent,
+    transparent,
     opacity: opts?.opacity ?? 1,
+    depthWrite: opts?.depthWrite ?? !transparent,
     flatShading: false
   });
 }
@@ -564,11 +566,10 @@ function rebuild3D(fit) {
 
   (spec.pieces || []).forEach((piece) => {
     const geo = buildPieceGeometry(ax.dir, ax.offset, piece, spec.profileSign, phiEnd, Nt, Np);
-    const hasInner = piece.r && linspace(piece.a, piece.b, 6).some((t) => (piece.r(t) || 0) > 1e-4);
-    const mesh = new THREE.Mesh(geo, makeMat(hasInner ? SOLID_COL : SOLID_COL));
+    const mesh = new THREE.Mesh(geo, makeMat(SOLID_COL, { transparent: true, opacity: 0.45 }));
     if (p.compareWrong && state.wrongMode === "wrong") {
       mesh.material.dispose();
-      mesh.material = makeMat(INNER_COL);
+      mesh.material = makeMat(INNER_COL, { transparent: true, opacity: 0.45 });
     }
     solidGroup.add(mesh);
   });
