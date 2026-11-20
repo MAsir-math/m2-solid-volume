@@ -81,6 +81,54 @@ almost("階段評估第3題 誤繞 x 軸", (2 * PI) / 15, (2 * PI) / 15);
 almost("階段評估第4題", Math.exp(2) * PI - 4 * Math.E * PI + 5 * PI, (Math.E ** 2 - 4 * Math.E + 5) * PI);
 almost("階段評估第5題", 16 * PI, 16 * PI);
 
+// 附加例題 10.10–10.19（獨立原函數）
+const Fextra1010 = (x) => Math.exp(2 * x) / 2 + 2 * Math.exp(x) + x;
+almost("附加例題 10.10", PI * (Fextra1010(1) - Fextra1010(0)), PI * Math.E ** 2 / 2 + 2 * PI * Math.E - 3 * PI / 2);
+almost("附加例題 10.10 下限原函數為 5/2", Fextra1010(0), 5 / 2);
+
+const Fextra1011 = (y) => y ** 5 / 5 + 4 * y ** 3 / 3 + 4 * y;
+almost("附加例題 10.11", PI * (Fextra1011(2) - Fextra1011(-2)), 752 * PI / 15);
+
+const Fsin2 = (x) => x / 2 - Math.sin(2 * x) / 4;
+almost("附加例題 10.12 半圈", (PI / 2) * (Fsin2(2 * PI) - Fsin2(PI / 2)), 3 * PI * PI / 8);
+check("附加例題 10.12 turn=1/2", findPreset("a-extra-10.12").turn, 0.5);
+
+const Flogsq = (y) => y * Math.log(y) ** 2 - 2 * y * Math.log(y) + 2 * y;
+almost("附加例題 10.13(b)", PI / (ln2 * ln2) * (Flogsq(8) - Flogsq(1)), PI / (ln2 * ln2) * (72 * ln2 * ln2 - 48 * ln2 + 14));
+assert.ok(findPreset("a-extra-10.13").partATex.includes("(\\ln 2)^{2}"), "附加例題 10.13 應鎖定 (a) 原函數");
+check("附加例題 10.13 下限是 1", findPreset("a-extra-10.13").pieces[0].a, 1);
+
+const Fouter1014 = (x) => x / 2 - Math.sin(2 * x) / 4 - 4 * Math.cos(x) + 4 * x;
+const Finner1014 = (x) => -0.5 * Math.exp(-2 * x);
+almost(
+  "附加例題 10.14",
+  PI * ((Fouter1014(PI / 2) - Fouter1014(0)) - (Finner1014(PI / 2) - Finner1014(0))),
+  9 * PI * PI / 4 + 7 * PI / 2 + (PI / 2) * Math.exp(-PI)
+);
+
+const pExtra15 = findPreset("b-extra-10.15");
+check("附加例題 10.15 在 y=0 分段", pExtra15.splitAt, 0);
+check("附加例題 10.15 第一段終點", pExtra15.pieces[0].b, 0);
+check("附加例題 10.15 第二段起點", pExtra15.pieces[1].a, 0);
+check("附加例題 10.15 下段為實心", pExtra15.pieces[0].r(-0.5), 0);
+const Iextra15a = 0 - (0.5 - 1); // [y^2/2 + y]_{-1}^{0}
+const Iextra15b = (9 / 2 + 3 - 4); // [y^2/2 + y - 4y^3/27]_{0}^{3}
+almost("附加例題 10.15", PI * (Iextra15a + Iextra15b), 4 * PI);
+
+almost("附加例題 10.16(a)", 5 * PI / 2, 5 * PI / 2);
+almost("附加例題 10.16(b)", 48 * PI * (5 * PI / 2), 120 * PI * PI);
+
+const Fextra1017 = (x) => x ** 5 / 5 + 2 * x ** 3 / 3 + x;
+almost("附加例題 10.17", PI * (Fextra1017(2) - Fextra1017(-2)), 412 * PI / 15);
+check("附加例題 10.17 軸為 y=-2", findPreset("c-extra-10.17").axis.offset, -2);
+check("附加例題 10.17 區域在軸上方", findPreset("c-extra-10.17").profileSign, 1);
+
+const Fextra1018 = (y) => (Math.E ** 4) * y - 2 * Math.exp(y + 1) + 0.5 * Math.exp(2 * y - 2);
+almost("附加例題 10.18", PI * (Fextra1018(3) - Fextra1018(0)), PI * (3 * Math.E ** 4 / 2 + 2 * Math.E - Math.exp(-2) / 2));
+
+const Fextra1019 = (x) => x ** 5 / 5 - 3 * x ** 3 + 2 * x ** 2 + 12 * x;
+almost("附加例題 10.19", PI * (Fextra1019(2) - Fextra1019(-1)), 108 * PI / 5);
+
 // Numerical vs closed form for every volume preset
 for (const p of PRESETS) {
   if (!p.hasVolume || p.volumeValue == null) continue;
@@ -120,6 +168,9 @@ const required = [
   "a-10.10", "a-10.10p", "a-10.11", "a-10.12", "a-think",
   "b-wrong", "b-10.14", "b-10.14p", "b-10.15", "b-10.16",
   "c-compare", "c-10.17", "c-10.18", "d-10.19", "d-10.19a",
+  "a-extra-10.10", "a-extra-10.11", "a-extra-10.12", "a-extra-10.13",
+  "b-extra-10.14", "b-extra-10.15", "b-extra-10.16",
+  "c-extra-10.17", "c-extra-10.18", "d-extra-10.19",
   "assess-1", "assess-2", "assess-3", "assess-4"
 ];
 const ids = new Set(allHashIds());

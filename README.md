@@ -9,7 +9,7 @@
 - 網站：<https://masir-math.github.io/m2-solid-volume/>
 - 亦可把本資料夾放在本機伺服器開啟（需能連 jsDelivr 以載入 Three.js、JSXGraph 與 KaTeX）。
 - Google Sites：插入 → 嵌入 → 以網址嵌入上述網址。
-- 可用網址後綴跳到指定例題，例如 `#a-10.10`、`#b-10.16`、`#c-compare`。
+- 可用網址後綴跳到指定例題，例如 `#a-10.10`、`#a-extra-10.10`、`#b-10.16`、`#c-compare`。預設含課本例題、課堂練習與附加例題 10.10–10.19。
 
 本頁不收集學生資料，沒有帳號，也不會把姓名寫進瀏覽器儲存。
 

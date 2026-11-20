@@ -153,6 +153,41 @@ export const PRESETS = [
     teacherTip: "課堂練習當作課閘：先隱藏積分和答案。"
   },
   {
+    id: "a-extra-10.10",
+    mode: "A",
+    label: "附加例題 10.10 — y = eˣ＋1，兩軸與 x = 1，繞 x 軸",
+    title: "附加例題 10.10",
+    stem: "由 \\(y=e^{x}+1\\)、兩坐標軸及 \\(x=1\\) 所圍的區域，繞 x 軸旋轉一周。",
+    hasVolume: true,
+    axis: { dir: "x", offset: 0 },
+    varName: "x",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: 0, b: 1, R: (x) => Math.exp(x) + 1, r: () => 0 }],
+    volumeTex: "\\dfrac{\\pi e^{2}}{2}+2\\pi e-\\dfrac{3\\pi}{2}",
+    volumeValue: PI * Math.E ** 2 / 2 + 2 * PI * Math.E - 3 * PI / 2,
+    integralTex: "V=\\pi\\int_{0}^{1}(e^{x}+1)^{2}\\,dx=\\pi\\bigl[e^{2x}/2+2e^{x}+x\\bigr]_{0}^{1}=\\dfrac{\\pi e^{2}}{2}+2\\pi e-\\dfrac{3\\pi}{2}",
+    curves: [
+      { type: "yofx", f: (x) => Math.exp(x) + 1, domain: [0, 1.15] },
+      { type: "vline", x: 1 }
+    ],
+    region: { kind: "yofx", lower: () => 0, upper: (x) => Math.exp(x) + 1, a: 0, b: 1 },
+    bbox: [-0.55, 4.5, 1.85, -0.85],
+    limitsTex: "[0,1]",
+    teacherPrompt: "展開 \\((e^{x}+1)^{2}=e^{2x}+2e^{x}+1\\)。代入下限 0 時，原函數是 \\(1/2+2=5/2\\)，所以終值裡是 \\(-3\\pi/2\\)，不是 \\(+\\pi/2\\)。",
+    studentPrompt: "先判斷旋轉軸、實心或空心、積分變量、半徑和上下限，再寫積分。",
+    notes: ["下限是 0。原函數在 0 的值是 \\(5/2\\)，相減後常數項是 \\(-3/2\\)。", "不要漏 \\(\\pi\\)。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["x 軸", "y 軸", "x=1"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心圓盤", "空心圓環"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 x 積分", "對 y 積分"], answer: 0 },
+      { q: "半徑是什麼？", options: ["\\(R=e^{x}+1\\)", "\\(R=e^{x}\\)", "\\(R=x+1\\)"], answer: 0 },
+      { q: "上下限是什麼？", options: ["\\([0,1]\\)", "\\([1,e]\\)", "\\([0,e]\\)"], answer: 0 }
+    ],
+    teacherTip: "核對原函數在下限的值：\\(1/2+2=5/2\\)，終值是 \\(\\pi e^{2}/2+2\\pi e-3\\pi/2\\)。"
+  },
+  {
     id: "a-10.11",
     mode: "A",
     label: "例 10.11 — x² = y²＋1，y = −1 與 y = 2，繞 y 軸",
@@ -224,6 +259,43 @@ export const PRESETS = [
     teacherTip: "交點 x=±√2 用來在 2D 圖上標帽的兩端；積分本身對 y 進行。"
   },
   {
+    id: "a-extra-10.11",
+    mode: "A",
+    label: "附加例題 10.11 — x² = y⁴＋4y²＋4，y = −2 與 y = 2，繞 y 軸",
+    title: "附加例題 10.11",
+    stem: "由 \\(x^{2}=y^{4}+4y^{2}+4\\)、\\(y=-2\\) 及 \\(y=2\\) 所圍的區域，繞 y 軸旋轉一周。",
+    hasVolume: true,
+    axis: { dir: "y", offset: 0 },
+    varName: "y",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: -2, b: 2, R: (y) => y * y + 2, r: () => 0 }],
+    volumeTex: "\\dfrac{752\\pi}{15}",
+    volumeValue: 752 * PI / 15,
+    integralTex: "V=\\pi\\int_{-2}^{2}(y^{2}+2)^{2}\\,dy=\\pi\\int_{-2}^{2}(y^{4}+4y^{2}+4)\\,dy=\\dfrac{752\\pi}{15}",
+    curves: [
+      { type: "xofy", g: (y) => y * y + 2, domain: [-2.15, 2.15] },
+      { type: "xofy", g: (y) => -(y * y + 2), domain: [-2.15, 2.15] },
+      { type: "hline", y: -2 },
+      { type: "hline", y: 2 }
+    ],
+    region: { kind: "xofy", inner: (y) => -(y * y + 2), outer: (y) => y * y + 2, c: -2, d: 2 },
+    bbox: [-7.4, 3.3, 7.4, -3.3],
+    limitsTex: "[-2,2]",
+    teacherPrompt: "先因式分解 \\(x^{2}=(y^{2}+2)^{2}\\)，即 \\(\\lvert x\\rvert=y^{2}+2\\)。平面圖要畫左右兩支；繞 y 軸轉出來仍是實心，不是空心。",
+    studentPrompt: "半徑平方可直接用 \\(x^{2}=(y^{2}+2)^{2}\\)，不必先開方再平方。",
+    notes: ["平面圖要畫 \\(x=\\pm(y^{2}+2)\\) 兩支。", "區域跨過 y 軸，繞 y 軸後仍是實心圓盤，不要做成圓環。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["y 軸", "x 軸", "y=2"], answer: 0 },
+      { q: "曲線可改寫成什麼？", options: ["\\(\\lvert x\\rvert=y^{2}+2\\)", "\\(x=y^{2}+4\\)", "\\(x^{2}=y^{2}+4\\)"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心圓盤（兩支繞同一軸轉成同一個立體）", "空心圓環（左右兩支中間有孔）"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 y 積分", "對 x 積分"], answer: 0 },
+      { q: "上下限是什麼？", options: ["\\(y:-2\\) 到 \\(2\\)", "\\(y:0\\) 到 \\(2\\)", "\\(x:-6\\) 到 \\(6\\)"], answer: 0 }
+    ],
+    teacherTip: "強調兩支都要畫，但體積仍用實心圓盤 \\(R=y^{2}+2\\)。終值 752π/15。"
+  },
+  {
     id: "a-10.12",
     mode: "A",
     label: "例 10.12 — y = 1＋cos x，兩軸與 x = 2π，繞 x 軸 180°",
@@ -291,6 +363,39 @@ export const PRESETS = [
       { q: "上下限是什麼？", options: ["\\([1,4]\\)", "\\([0,4]\\)", "\\([1,2]\\)"], answer: 0 }
     ],
     teacherTip: "可先問全圈，再對半。"
+  },
+  {
+    id: "a-extra-10.12",
+    mode: "A",
+    label: "附加例題 10.12 — y = −sin x 與 x 軸，[π/2, 2π]，繞 x 軸 180°",
+    title: "附加例題 10.12",
+    stem: "由 \\(y=-\\sin x\\) 與 x 軸、在 \\(x=\\pi/2\\) 到 \\(x=2\\pi\\) 所圍的區域，繞 x 軸旋轉 \\(180^\\circ\\)。",
+    hasVolume: true,
+    axis: { dir: "x", offset: 0 },
+    varName: "x",
+    hollow: false,
+    turn: 0.5,
+    profileSign: 1,
+    pieces: [{ a: PI / 2, b: 2 * PI, R: (x) => Math.abs(Math.sin(x)), r: () => 0 }],
+    volumeTex: "\\dfrac{3\\pi^{2}}{8}",
+    volumeValue: 3 * PI * PI / 8,
+    integralTex: "V=\\dfrac{1}{2}\\pi\\int_{\\pi/2}^{2\\pi}\\sin^{2} x\\,dx=\\dfrac{3\\pi^{2}}{8}",
+    curves: [{ type: "yofx", f: (x) => -Math.sin(x), domain: [PI / 2, 2 * PI] }],
+    region: { kind: "yofx-abs", lower: () => 0, upper: (x) => -Math.sin(x), a: PI / 2, b: 2 * PI },
+    bbox: [-0.6, 1.7, 7.1, -1.7],
+    ticks: "pi",
+    limitsTex: "[\\pi/2,2\\pi]",
+    teacherPrompt: "這是半圈，體積是全圈的一半。半徑用 \\(\\lvert-\\sin x\\rvert=\\lvert\\sin x\\rvert\\)，平方後仍是 \\(\\sin^{2} x\\)。曲線在 \\([\\pi/2,\\pi]\\) 位於 x 軸下方。",
+    studentPrompt: "注意題目是旋轉 180°，不是一周。穿軸後半徑平方仍非負，一般不必只為求體積而分段。",
+    notes: ["\\(180^\\circ\\) 是全圈的一半，積分前要乘 \\(1/2\\)。", "半徑用絕對值，平方後是 \\(\\sin^{2} x\\)。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["x 軸", "y 軸"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心圓盤", "空心圓環"], answer: 0 },
+      { q: "旋轉了多少？", options: ["180°，是全圈一半", "一周 360°", "90°"], answer: 0 },
+      { q: "被積函數是什麼？", options: ["\\(\\sin^{2} x\\)（平方後恒非負）", "\\(-\\sin x\\)", "\\(\\lvert\\sin x\\rvert\\) 但不平方"], answer: 0 },
+      { q: "上下限是什麼？", options: ["\\([\\pi/2,2\\pi]\\)", "\\([0,2\\pi]\\)", "\\([0,\\pi]\\)"], answer: 0 }
+    ],
+    teacherTip: "先把滑桿轉到 180°，再對照 360°。終值是 3π²/8。"
   },
   {
     id: "a-think",
@@ -365,6 +470,42 @@ export const PRESETS = [
       { q: "上下限是什麼？", options: ["\\(y:0\\) 到 \\(60\\)", "\\(x:4\\) 到 \\(10\\)", "\\(y:4\\) 到 \\(10\\)"], answer: 0 }
     ],
     teacherTip: "此題以視覺為主，終值已鎖定。不要在頁面上展開換元步驟。"
+  },
+  {
+    id: "a-extra-10.13",
+    mode: "A",
+    label: "附加例題 10.13 — y = 2ˣ、y 軸與 y = 8，繞 y 軸",
+    title: "附加例題 10.13",
+    stem: "(a) 運用分部積分法，求 \\(\\displaystyle\\int(\\log_{2} t)^{2}\\,dt\\)。(b) 設 \\(\\Gamma\\) 為 \\(y=2^{x}\\)，其中 \\(0\\le x\\le 3\\)。由 \\(\\Gamma\\)、y 軸及 \\(y=8\\) 所圍的區域，繞 y 軸旋轉一周。本頁鎖定 (a) 的原函數與 (b) 的體積，不把計算做成計算機。",
+    hasVolume: true,
+    axis: { dir: "y", offset: 0 },
+    varName: "y",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: 1, b: 8, R: (y) => Math.log(y) / ln2, r: () => 0 }],
+    volumeTex: "\\dfrac{\\pi}{(\\ln 2)^{2}}\\bigl[72(\\ln 2)^{2}-48\\ln 2+14\\bigr]",
+    volumeValue: PI / (ln2 * ln2) * (72 * ln2 * ln2 - 48 * ln2 + 14),
+    integralTex: "V=\\pi\\int_{1}^{8}(\\log_{2} y)^{2}\\,dy=\\dfrac{\\pi}{(\\ln 2)^{2}}\\bigl[72(\\ln 2)^{2}-48\\ln 2+14\\bigr]",
+    partATex: "\\int(\\log_{2} t)^{2}\\,dt=\\dfrac{1}{(\\ln 2)^{2}}\\bigl[t(\\ln t)^{2}-2t\\ln t+2t\\bigr]+C",
+    curves: [
+      { type: "yofx", f: (x) => 2 ** x, domain: [0, 3.15] },
+      { type: "hline", y: 8 }
+    ],
+    region: { kind: "xofy", inner: () => 0, outer: (y) => Math.log(y) / ln2, c: 1, d: 8 },
+    bbox: [-0.7, 9.3, 3.9, -0.7],
+    limitsTex: "[1,8]",
+    teacherPrompt: "(a) 先把 \\(\\log_{2} t=\\ln t/\\ln 2\\) 再分部積分，原函數已鎖定。(b) 在 \\(x=0\\) 時 \\(y=1\\)，所以 y 從 1 到 8，半徑是 \\(\\log_{2} y\\)。",
+    studentPrompt: "先完成 (a)，再把 (b) 改成對 y 積分。",
+    notes: ["\\(x=0\\) 時 \\(y=1\\)，下限不是 0。", "繞 y 軸，半徑是 \\(\\log_{2} y\\)。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["y 軸", "x 軸", "y=8"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心圓盤", "空心圓環"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 y 積分", "對 x 積分"], answer: 0 },
+      { q: "半徑是什麼？", options: ["\\(R=\\log_{2} y\\)", "\\(R=2^{y}\\)", "\\(R=y\\)"], answer: 0 },
+      { q: "y 的上下限？", options: ["\\(1\\) 到 \\(8\\)", "\\(0\\) 到 \\(8\\)", "\\(0\\) 到 \\(3\\)"], answer: 0, explain: "曲線與 y 軸交於 (0, 1)，下限是 1 不是 0。" }
+    ],
+    teacherTip: "(a)、(b) 終值已鎖定。不要在頁面上把本題做成計算機。y 的下限是 1。"
   },
 
   // ---------- B 圓環法 ----------
@@ -482,6 +623,43 @@ export const PRESETS = [
     teacherTip: "課閘：對照錯誤 (4x−x²−2x)²。"
   },
   {
+    id: "b-extra-10.14",
+    mode: "B",
+    label: "附加例題 10.14 — y = sin x＋2 與 y = e⁻ˣ，y 軸與 x = π/2，繞 x 軸",
+    title: "附加例題 10.14",
+    stem: "由 \\(y=\\sin x+2\\)、\\(y=e^{-x}\\)、y 軸及 \\(x=\\pi/2\\) 所圍的區域，繞 x 軸旋轉一周。",
+    hasVolume: true,
+    axis: { dir: "x", offset: 0 },
+    varName: "x",
+    hollow: true,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: 0, b: PI / 2, R: (x) => Math.sin(x) + 2, r: (x) => Math.exp(-x) }],
+    volumeTex: "\\dfrac{9\\pi^{2}}{4}+\\dfrac{7\\pi}{2}+\\dfrac{\\pi}{2}e^{-\\pi}",
+    volumeValue: 9 * PI * PI / 4 + 7 * PI / 2 + (PI / 2) * Math.exp(-PI),
+    integralTex: "V=\\pi\\int_{0}^{\\pi/2}\\bigl[(\\sin x+2)^{2}-e^{-2x}\\bigr]\\,dx=\\dfrac{9\\pi^{2}}{4}+\\dfrac{7\\pi}{2}+\\dfrac{\\pi}{2}e^{-\\pi}",
+    curves: [
+      { type: "yofx", f: (x) => Math.sin(x) + 2, domain: [0, PI / 2] },
+      { type: "yofx", f: (x) => Math.exp(-x), domain: [0, PI / 2] },
+      { type: "vline", x: PI / 2 }
+    ],
+    region: { kind: "yofx", lower: (x) => Math.exp(-x), upper: (x) => Math.sin(x) + 2, a: 0, b: PI / 2 },
+    bbox: [-0.45, 3.7, 2.15, -0.55],
+    ticks: "pi",
+    limitsTex: "[0,\\pi/2]",
+    teacherPrompt: "外半徑 \\(\\sin x+2\\)，內半徑 \\(e^{-x}\\)。要先各自平方再減，不要減完再平方。",
+    studentPrompt: "先判斷哪一條較遠離 x 軸，那一條就是外半徑。",
+    notes: ["外平方減內平方，不是減完再平方。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["x 軸", "y 軸", "x=π/2"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["空心圓環", "實心圓盤"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 x 積分", "對 y 積分"], answer: 0 },
+      { q: "外、內半徑？", options: ["外 \\(\\sin x+2\\)，內 \\(e^{-x}\\)", "外 \\(e^{-x}\\)，內 \\(\\sin x+2\\)", "半徑 \\(\\sin x+2-e^{-x}\\)"], answer: 0 },
+      { q: "上下限是什麼？", options: ["\\([0,\\pi/2]\\)", "\\([0,\\pi]\\)", "\\([\\pi/2,\\pi]\\)"], answer: 0 }
+    ],
+    teacherTip: "終值是 \\(9\\pi^{2}/4+7\\pi/2+(\\pi/2)e^{-\\pi}\\)。"
+  },
+  {
     id: "b-10.15",
     mode: "B",
     label: "例 10.15 — y = x²、y = x＋2、y 軸，繞 y 軸",
@@ -562,6 +740,46 @@ export const PRESETS = [
     teacherTip: "終值 4π。與例 10.15 同一種分段結構。"
   },
   {
+    id: "b-extra-10.15",
+    mode: "B",
+    label: "附加例題 10.15 — y = x²−1、2y = 3x、y 軸，繞 y 軸",
+    title: "附加例題 10.15",
+    stem: "由 \\(\\Gamma:\\,y=x^{2}-1\\)、直線 \\(L:\\,2y=3x\\) 及 y 軸所圍的區域，繞 y 軸旋轉一周。(a) 已知 \\(\\Gamma\\) 與 \\(L\\) 在第一象限相交於 \\(A\\)，求 \\(A\\) 的坐標。(b) 必須沿 \\(y=0\\) 分段。",
+    hasVolume: true,
+    axis: { dir: "y", offset: 0 },
+    varName: "y",
+    hollow: true,
+    turn: 1,
+    profileSign: 1,
+    splitAt: 0,
+    pieces: [
+      { a: -1, b: 0, R: (y) => Math.sqrt(y + 1), r: () => 0, tag: "solid" },
+      { a: 0, b: 3, R: (y) => Math.sqrt(y + 1), r: (y) => (2 / 3) * y, tag: "washer" }
+    ],
+    volumeTex: "4\\pi",
+    volumeValue: 4 * PI,
+    integralTex: "V=\\pi\\int_{-1}^{0}(y+1)\\,dy+\\pi\\int_{0}^{3}\\bigl[(y+1)-\\bigl(\\tfrac{2}{3}y\\bigr)^{2}\\bigr]\\,dy=4\\pi",
+    curves: [
+      { type: "yofx", f: (x) => x * x - 1, domain: [0, 2.2] },
+      { type: "yofx", f: (x) => (3 / 2) * x, domain: [0, 2.2] }
+    ],
+    region: { kind: "composite-bextra1015" },
+    bbox: [-0.6, 3.8, 2.8, -1.6],
+    limitsTex: "[-1,0]\\cup[0,3]",
+    marks: [{ x: 2, y: 3, name: "A(2, 3)" }, { x: 0, y: 0, name: "y=0" }],
+    teacherPrompt: "\\(\\Gamma\\) 的 y 截距是 \\(-1\\)，\\(L\\) 的 y 截距是 0。改寫 \\(x=\\sqrt{y+1}\\)、\\(x=\\tfrac{2}{3}y\\)。\\(y=-1\\) 到 0 是實心，\\(y=0\\) 到 3 是圓環。",
+    studentPrompt: "先標交點 A，再問：用水平薄片時，在哪一條水平線性質會改變？",
+    notes: ["必須在 \\(y=0\\) 分段：下段實心，上段空心。", "交點是 \\(A(2,3)\\)。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["y 軸", "x 軸"], answer: 0 },
+      { q: "交點 A 的坐標？", options: ["\\((2,3)\\)", "\\((3,2)\\)", "\\((0,0)\\)"], answer: 0 },
+      { q: "為什麼要在 y=0 分段？", options: ["下段碰到 y 軸是實心，上段中間有直線造成的孔", "只是為了計算方便，其實可以不分段"], answer: 0 },
+      { q: "y=−1 到 0 的半徑？", options: ["實心，\\(R=\\sqrt{y+1}\\)", "圓環，內半徑 \\(\\tfrac{2}{3}y\\)", "\\(R=y+1\\)"], answer: 0 },
+      { q: "y=0 到 3 的外、內半徑？", options: ["外 \\(\\sqrt{y+1}\\)，內 \\(\\tfrac{2}{3}y\\)", "外 \\(\\tfrac{2}{3}y\\)，內 \\(\\sqrt{y+1}\\)", "半徑 \\(\\sqrt{y+1}-\\tfrac{2}{3}y\\)"], answer: 0 }
+    ],
+    teacherTip: "終值是 4π。移動薄片滑桿跨過 y=0，看薄片由圓盤變成圓環。"
+  },
+  {
     id: "b-10.16",
     mode: "B",
     label: "例 10.16 — 圓 (x−2)²＋y² = 1 繞 y 軸成環面",
@@ -638,6 +856,45 @@ export const PRESETS = [
       { q: "(a) 的積分值？", options: ["\\(3\\pi/2\\)", "\\(3\\pi\\)", "\\(\\pi/2\\)"], answer: 0 }
     ],
     teacherTip: "與例 10.16 同一思路，只是改繞 x 軸。"
+  },
+  {
+    id: "b-extra-10.16",
+    mode: "B",
+    label: "附加例題 10.16 — 橢圓 (x−4)²/9＋y²/25 = 1 繞 y 軸成環面",
+    title: "附加例題 10.16 環面",
+    stem: "(a) \\(\\displaystyle\\int_{-5}^{5}\\sqrt{1-t^{2}/25}\\,dt=\\dfrac{5\\pi}{2}\\)。(b) 橢圓 \\(\\dfrac{(x-4)^{2}}{9}+\\dfrac{y^{2}}{25}=1\\) 繞 y 軸旋轉一周，成環面。左右支為 \\(x=4\\pm 3\\sqrt{1-y^{2}/25}\\)，\\(y\\) 由 \\(-5\\) 到 \\(5\\)。可用 \\((a+b)^{2}-(a-b)^{2}=4ab\\)。",
+    hasVolume: true,
+    axis: { dir: "y", offset: 0 },
+    varName: "y",
+    hollow: true,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{
+      a: -5,
+      b: 5,
+      R: (y) => 4 + 3 * Math.sqrt(Math.max(0, 1 - y * y / 25)),
+      r: (y) => 4 - 3 * Math.sqrt(Math.max(0, 1 - y * y / 25))
+    }],
+    volumeTex: "120\\pi^{2}",
+    volumeValue: 120 * PI * PI,
+    integralTex: "V=\\pi\\int_{-5}^{5}4\\cdot 4\\cdot 3\\sqrt{1-y^{2}/25}\\,dy=48\\pi\\cdot\\dfrac{5\\pi}{2}=120\\pi^{2}",
+    partATex: "\\int_{-5}^{5}\\sqrt{1-\\dfrac{t^{2}}{25}}\\,dt=\\dfrac{5\\pi}{2}",
+    curves: [{ type: "ellipse", cx: 4, cy: 0, rx: 3, ry: 5 }],
+    region: { kind: "ellipse", cx: 4, cy: 0, rx: 3, ry: 5 },
+    bbox: [-1.4, 6.6, 8.6, -6.6],
+    limitsTex: "[-5,5]",
+    simpsonN: 2000,
+    teacherPrompt: "剖開環面，讓學生看見中間的孔。用 4ab 化簡平方差，其中 \\(a=4\\)、\\(b=3\\sqrt{1-y^{2}/25}\\)。",
+    studentPrompt: "先完成 (a)，再代入 (b)。",
+    notes: ["外平方減內平方可用 \\(4ab\\) 化簡。", "這是中間有孔的環面，不是實心橢球。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["y 軸", "x 軸", "豎線 x=4"], answer: 0 },
+      { q: "轉出來是什麼？", options: ["中間有孔的環面", "實心橢球"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 y 積分", "對 x 積分"], answer: 0 },
+      { q: "外、內支是什麼？", options: ["\\(x=4\\pm 3\\sqrt{1-y^{2}/25}\\)", "\\(x=\\pm 3\\sqrt{1-y^{2}/25}\\)", "\\(x=4\\)"], answer: 0 },
+      { q: "(a) 的積分值？", options: ["\\(5\\pi/2\\)", "\\(5\\pi\\)", "\\(\\pi/2\\)"], answer: 0 }
+    ],
+    teacherTip: "與例 10.16 同一思路。終值 120π²。記得打開剖視，看見孔。"
   },
 
   // ---------- C/D 平行軸 ----------
@@ -759,6 +1016,43 @@ export const PRESETS = [
     teacherTip: "在 x=0，曲線剛好通過 (0,1)，與軸相接。"
   },
   {
+    id: "c-extra-10.17",
+    mode: "C",
+    label: "附加例題 10.17 — y = x²−1，x = ±2 與 y = −2，繞 y = −2",
+    title: "附加例題 10.17",
+    stem: "由 \\(y=x^{2}-1\\)、\\(x=-2\\)、\\(x=2\\) 及 \\(y=-2\\) 所圍的區域，繞直線 \\(y=-2\\) 旋轉一周。半徑為 \\(x^{2}+1\\)，\\(x\\) 由 \\(-2\\) 到 \\(2\\)。",
+    hasVolume: true,
+    axis: { dir: "x", offset: -2 },
+    varName: "x",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: -2, b: 2, R: (x) => x * x + 1, r: () => 0 }],
+    volumeTex: "\\dfrac{412\\pi}{15}",
+    volumeValue: 412 * PI / 15,
+    integralTex: "V=\\pi\\int_{-2}^{2}(x^{2}+1)^{2}\\,dx=\\dfrac{412\\pi}{15}",
+    curves: [
+      { type: "yofx", f: (x) => x * x - 1, domain: [-2.15, 2.15] },
+      { type: "hline", y: -2 },
+      { type: "vline", x: -2 },
+      { type: "vline", x: 2 }
+    ],
+    region: { kind: "yofx", lower: () => -2, upper: (x) => x * x - 1, a: -2, b: 2 },
+    bbox: [-3.1, 4.0, 3.1, -2.9],
+    limitsTex: "[-2,2]",
+    teacherPrompt: "軸是 y=−2，區域在軸上方並貼著這條軸，所以是實心。半徑是 \\((x^{2}-1)-(-2)=x^{2}+1\\)，不是把 y 直接平方。",
+    studentPrompt: "半徑永遠是到「那一條旋轉軸」的距離。",
+    notes: ["繞 y=k 時，半徑是到 y=k 的距離，不要仍寫成 y²。", "區域貼著 y=−2，是實心。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["\\(y=-2\\)", "x 軸", "y 軸"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心（區域貼著 y=−2）", "空心圓環"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 x 積分", "對 y 積分"], answer: 0, explain: "軸平行於 x 軸，薄片垂直於軸，所以對 x 積分。" },
+      { q: "半徑是什麼？", options: ["\\(x^{2}+1\\)", "\\(x^{2}-1\\)", "\\(-2\\)"], answer: 0 },
+      { q: "上下限是什麼？", options: ["\\(x:-2\\) 到 \\(2\\)", "\\(y:-2\\) 到 \\(3\\)", "\\(x:0\\) 到 \\(2\\)"], answer: 0 }
+    ],
+    teacherTip: "強調半徑是鉛垂距離 \\(\\lvert y-(-2)\\rvert\\)。終值 412π/15。"
+  },
+  {
     id: "c-10.18",
     mode: "C",
     label: "例 10.18 — y = ln x、x = 2 與 x 軸，繞 x = 2",
@@ -827,6 +1121,41 @@ export const PRESETS = [
       { q: "y 的上下限？", options: ["\\(-1/2\\) 到 \\(0\\)", "\\(0\\) 到 \\(1/2\\)", "\\(1\\) 到 \\(2\\)"], answer: 0 }
     ],
     teacherTip: "若有學生得到負值，多半是上下限或平方前的符號處理錯了；平方後應為正。"
+  },
+  {
+    id: "c-extra-10.18",
+    mode: "C",
+    label: "附加例題 10.18 — y = ln x＋1、x 軸與 x = e²，繞 x = e²",
+    title: "附加例題 10.18",
+    stem: "由 \\(y=\\ln x+1\\)、x 軸及 \\(x=e^{2}\\) 所圍的區域，繞直線 \\(x=e^{2}\\) 旋轉一周。改寫 \\(x=e^{y-1}\\)，半徑 \\(e^{2}-e^{y-1}\\)，\\(y\\) 由 0 到 3。",
+    hasVolume: true,
+    axis: { dir: "y", offset: Math.E ** 2 },
+    varName: "y",
+    hollow: false,
+    turn: 1,
+    profileSign: -1,
+    pieces: [{ a: 0, b: 3, R: (y) => Math.E ** 2 - Math.exp(y - 1), r: () => 0 }],
+    volumeTex: "\\pi\\bigl(\\dfrac{3e^{4}}{2}+2e-\\dfrac{1}{2}e^{-2}\\bigr)",
+    volumeValue: PI * (3 * Math.E ** 4 / 2 + 2 * Math.E - Math.exp(-2) / 2),
+    integralTex: "V=\\pi\\int_{0}^{3}(e^{2}-e^{y-1})^{2}\\,dy=\\pi\\bigl(\\tfrac{3}{2}e^{4}+2e-\\tfrac{1}{2}e^{-2}\\bigr)",
+    curves: [
+      { type: "yofx", f: (x) => Math.log(x) + 1, domain: [Math.exp(-1), Math.E ** 2 + 0.15] },
+      { type: "vline", x: Math.E ** 2 }
+    ],
+    region: { kind: "xofy", inner: (y) => Math.exp(y - 1), outer: () => Math.E ** 2, c: 0, d: 3 },
+    bbox: [-0.7, 3.7, 8.6, -0.7],
+    limitsTex: "[0,3]",
+    teacherPrompt: "曲線與 \\(x=e^{2}\\) 交於 \\(y=3\\)，與 x 軸交於 \\(x=e^{-1}\\)。軸平行於 y 軸，應對 y 積分。區域貼著 \\(x=e^{2}\\)，是實心。",
+    studentPrompt: "先改寫 x 為 y 的函數，再寫半徑 \\(e^{2}-x(y)\\)。",
+    notes: ["繞 x=h 時，半徑是水平距離，不要仍寫 x²。", "積分變量通常沿該軸（這裡是 y）。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["\\(x=e^{2}\\)", "y 軸", "x 軸"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心（區域貼著 \\(x=e^{2}\\)）", "空心圓環"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 y 積分", "對 x 積分"], answer: 0 },
+      { q: "半徑是什麼？", options: ["\\(e^{2}-e^{y-1}\\)", "\\(e^{y-1}\\)", "\\(\\ln x+1\\)"], answer: 0 },
+      { q: "y 的上下限？", options: ["\\(0\\) 到 \\(3\\)", "\\(0\\) 到 \\(e^{2}\\)", "\\(-1\\) 到 \\(3\\)"], answer: 0 }
+    ],
+    teacherTip: "終值 \\(\\pi(3e^{4}/2+2e-e^{-2}/2)\\)。"
   },
   {
     id: "d-10.19",
@@ -933,6 +1262,41 @@ export const PRESETS = [
       { q: "y 的上下限？", options: ["\\(0\\) 到 \\(2\\)", "\\(-1\\) 到 \\(2\\)", "\\(0\\) 到 \\(3\\)"], answer: 0 }
     ],
     teacherTip: "可選。終值 72π/5。"
+  },
+  {
+    id: "d-extra-10.19",
+    mode: "C",
+    label: "附加例題 10.19 — y = x²−2 與 y = x，繞 y = 2",
+    title: "附加例題 10.19",
+    stem: "由 \\(y=x^{2}-2\\) 與 \\(y=x\\) 所圍的區域，繞直線 \\(y=2\\) 旋轉一周。交點 \\(x=-1\\) 與 \\(x=2\\)。軸在區域上方。",
+    hasVolume: true,
+    axis: { dir: "x", offset: 2 },
+    varName: "x",
+    hollow: true,
+    turn: 1,
+    profileSign: -1,
+    pieces: [{ a: -1, b: 2, R: (x) => 4 - x * x, r: (x) => 2 - x }],
+    volumeTex: "\\dfrac{108\\pi}{5}",
+    volumeValue: 108 * PI / 5,
+    integralTex: "V=\\pi\\int_{-1}^{2}\\bigl[(4-x^{2})^{2}-(2-x)^{2}\\bigr]\\,dx=\\dfrac{108\\pi}{5}",
+    curves: [
+      { type: "yofx", f: (x) => x * x - 2, domain: [-1.25, 2.2] },
+      { type: "yofx", f: (x) => x, domain: [-1.25, 2.2] }
+    ],
+    region: { kind: "yofx", lower: (x) => x * x - 2, upper: (x) => x, a: -1, b: 2 },
+    bbox: [-1.9, 3.0, 2.9, -2.7],
+    limitsTex: "[-1,2]",
+    teacherPrompt: "軸在區域上方。拋物線離 y=2 較遠，是外半徑 \\(4-x^{2}\\)；直線 y=x 較近，是內半徑 \\(2-x\\)。",
+    studentPrompt: "先量兩條邊界到 y=2 的距離，哪一條較大就是外半徑。",
+    notes: ["繞 y=2，半徑是到 y=2 的距離，不要寫成 y²。", "外半徑是離軸較遠的那一條。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["\\(y=2\\)", "x 軸", "y 軸"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["空心圓環（區域不貼著 y=2）", "實心圓盤"], answer: 0 },
+      { q: "交點的 x 坐標？", options: ["\\(x=-1,\\,2\\)", "\\(x=0,\\,2\\)", "\\(x=\\pm 2\\)"], answer: 0 },
+      { q: "哪一條邊界離 y=2 較遠？", options: ["拋物線 \\(y=x^{2}-2\\)，外半徑 \\(4-x^{2}\\)", "直線 \\(y=x\\)"], answer: 0 },
+      { q: "內半徑是什麼？", options: ["\\(2-x\\)", "\\(4-x^{2}\\)", "\\(x\\)"], answer: 0 }
+    ],
+    teacherTip: "這個區域比 例 10.19 大。強調：離軸遠的是外半徑。終值 108π/5。"
   },
 
   // ---------- 階段評估 ----------

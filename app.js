@@ -274,6 +274,10 @@ function fillRegion(p) {
     fillXofY(() => 0, (y) => Math.sqrt(y), 0, 2, ABOVE);
     fillXofY((y) => Math.sqrt(2 * (y - 2)), (y) => Math.sqrt(y), 2, 4, ABOVE);
   }
+  else if (r.kind === "composite-bextra1015") {
+    fillXofY(() => 0, (y) => Math.sqrt(y + 1), -1, 0, ABOVE);
+    fillXofY((y) => (2 / 3) * y, (y) => Math.sqrt(y + 1), 0, 3, ABOVE);
+  }
   else if (r.kind === "assess1") {
     fillYofX((x) => x * x, () => r.d, 0, r.b, ABOVE);
     fillYofX(() => 0, (x) => x * x, 0, r.b, BELOW);
@@ -1108,6 +1112,10 @@ function selfCheck() {
   const b1015 = findPreset("b-10.15");
   if (b1015.splitAt !== 2 || b1015.pieces[0].b !== 2 || b1015.pieces[1].a !== 2) {
     failed.push("10.15 must split at y=2");
+  }
+  const bExtra1015 = findPreset("b-extra-10.15");
+  if (!bExtra1015 || bExtra1015.splitAt !== 0 || bExtra1015.pieces[0].b !== 0 || bExtra1015.pieces[1].a !== 0) {
+    failed.push("附加例題 10.15 must split at y=0");
   }
   return failed;
 }
