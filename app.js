@@ -367,6 +367,17 @@ function draw2D() {
       fixed: true, highlight: false, label: { fontSize: 13, color: INK, offset: [8, 10] }
     });
   });
+  (p.boardLabels || []).forEach((lb) => {
+    board.create("text", [lb.x, lb.y, lb.text], {
+      fontSize: lb.fontSize || 14,
+      color: INK,
+      fixed: true,
+      highlight: false,
+      anchorX: lb.anchorX || "middle",
+      anchorY: lb.anchorY || "middle",
+      cssStyle: "font-family: 'Noto Sans TC', sans-serif; font-weight: 700;"
+    });
+  });
   if (state.showSlice && spec.pieces && spec.pieces.length) {
     const [t0, t1] = tRange(spec);
     const t = t0 + state.sliceU * (t1 - t0);
@@ -380,7 +391,7 @@ function draw2D() {
         strokeColor: "#6b4d12", strokeWidth: 4, highlight: false, fixed: true
       });
       const mid = (y0 + y1) / 2;
-      board.create("text", [t, mid, r > 1e-6 ? "R, r" : "R"], {
+      board.create("text", [t, mid, p.sliceRadiusLabel || (r > 1e-6 ? "R, r" : "R")], {
         fontSize: 13, color: "#6b4d12", fixed: true, highlight: false,
         cssStyle: "font-family: 'Noto Sans TC', sans-serif; font-weight: 700;"
       });
@@ -391,7 +402,7 @@ function draw2D() {
         strokeColor: "#6b4d12", strokeWidth: 4, highlight: false, fixed: true
       });
       const mid = (x0 + x1) / 2;
-      board.create("text", [mid, t, r > 1e-6 ? "R, r" : "R"], {
+      board.create("text", [mid, t, p.sliceRadiusLabel || (r > 1e-6 ? "R, r" : "R")], {
         fontSize: 13, color: "#6b4d12", fixed: true, highlight: false,
         cssStyle: "font-family: 'Noto Sans TC', sans-serif; font-weight: 700;"
       });
@@ -939,7 +950,7 @@ function renderChrome() {
   const showInt = !needs || done || state.revealedIntegral || state.teacherUnlock;
   const showAns = state.revealedAnswer || state.teacherUnlock;
   $("btnRevealIntegral").hidden = !needs;
-  $("btnRevealAnswer").hidden = p.judgment || !p.hasVolume;
+  $("btnRevealAnswer").hidden = p.judgment || !p.hasVolume || p.volumeValue == null;
   $("btnTeacherReveal").hidden = p.mode === "intro" && !needs;
 
   const formula = $("formula");

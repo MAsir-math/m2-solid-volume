@@ -168,9 +168,23 @@ assert.ok(wrong.wrongIntegralTex.includes("(2-1)^2") || wrong.wrongIntegralTex.i
 assert.equal(wrong.volumeValue, 3 * PI);
 assert.equal(wrong.wrongVolumeValue, PI);
 
+
+const introFxP = findPreset("intro-fx");
+const introGyP = findPreset("intro-gy");
+assert.equal(introFxP.axis.dir, "x");
+assert.equal(introGyP.axis.dir, "y");
+assert.ok(introFxP.volumeValue == null, "引入一般情況不應鎖定數值體積");
+assert.ok(introGyP.volumeValue == null, "引入一般情況不應鎖定數值體積");
+assert.ok(introFxP.integralTex.includes("f(x)"), "引入 y=f(x) 應顯示圓盤法公式");
+assert.ok(introGyP.integralTex.includes("g(y)"), "引入 x=g(y) 應顯示圓盤法公式");
+assert.ok(introGyP.notes.some((n) => n.includes("圓盤法")), "繞 y 軸一般情況應點出圓盤法");
+assert.ok(introFxP.pieces[0].R(1) > 0 && introFxP.pieces[0].R(4) > introFxP.pieces[0].R(1), "y=f(x) 輪廓應為正且大致遞增");
+assert.ok(introGyP.pieces[0].R(0.4) > 0 && introGyP.pieces[0].R(1.8) > introGyP.pieces[0].R(0.4), "x=g(y) 花瓶輪廓應為正且中段較闊");
+results.push({ label: "引入一般情況 y=f(x)／x=g(y)", expected: true, actual: true, ok: true });
+
 // Required hash ids
 const required = [
-  "intro-barrel", "intro-cylinder",
+  "intro-barrel", "intro-cylinder", "intro-fx", "intro-gy",
   "a-10.10", "a-10.10p", "a-10.11", "a-10.12", "a-10.13", "a-10.13p", "a-think",
   "b-wrong", "b-10.14", "b-10.14p", "b-10.15", "b-10.16",
   "c-compare", "c-10.17", "c-10.18", "d-10.19", "d-10.19a",

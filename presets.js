@@ -9,6 +9,18 @@ const SQRT2 = Math.SQRT2;
 
 function sq(x) { return x * x; }
 
+/** Schematic profile for 圖 10.1: increasing, slightly concave, like y=f(x) on [1, 4]. */
+function introFx(x) {
+  return 0.7 + 1.15 / (1 + Math.exp(-3 * ((x - 1) / 3 - 0.45)));
+}
+
+/** Schematic vase profile for the y-axis general case, y on [0.4, 3.2]. */
+function introGy(y) {
+  const t = (y - 0.4) / 2.8;
+  return 0.65 + 0.22 * t + 0.42 * Math.sin(Math.PI * t) - 0.08 * Math.sin(2 * Math.PI * t);
+}
+
+
 export const HASH_ALIASES = {
   "assess-2": "a-think"
 };
@@ -78,7 +90,79 @@ export const PRESETS = [
     studentPrompt: "若高不再是常數 \\(r\\)，而變成函數 \\(f(x)\\)，薄片仍然是圓盤，只是半徑改為 \\(f(x)\\)，體積元素就是 \\(\\pi\\bigl[f(x)\\bigr]^2\\Delta x\\)。",
     notes: ["漏 \\(\\pi\\)：圓盤面積是 \\(\\pi R^2\\)，不要只寫 \\(R^2\\Delta x\\)。"],
     scaffold: [],
-    teacherTip: "這是圓盤法的原型。下一題開始把半徑改成函數，但薄片的形狀仍然是圓盤。"
+    teacherTip: "這是圓盤法的原型。下一題用圖 10.1 的一般情況：把高改成函數 \(y=f(x)\)，薄片仍然是圓盤。"
+  },
+  {
+    id: "intro-fx",
+    mode: "intro",
+    label: "圖 10.1 — y = f(x)、x 軸與 x = a, b，繞 x 軸",
+    title: "一般情況：y = f(x) 繞 x 軸",
+    stem: "圖 10.1：陰影區域由曲線 \\(y=f(x)\\)、x 軸及直線 \\(x=a\\)、\\(x=b\\) 所圍。若該區域繞 x 軸旋轉一周，便得到一個實心旋轉體。本頁只示範形狀與典型圓盤，不鎖定某個具體函數的數值體積。",
+    hasVolume: true,
+    axis: { dir: "x", offset: 0 },
+    varName: "x",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: 1, b: 4, R: introFx, r: () => 0 }],
+    integralTex: "V=\\pi\\int_{a}^{b}\\bigl[f(x)\\bigr]^2\\,dx\\quad\\text{或}\\quad \\pi\\int_{a}^{b} y^2\\,dx",
+    sliceRadiusLabel: "f(x)",
+    curves: [
+      { type: "yofx", f: introFx, domain: [1, 4] },
+      { type: "vline", x: 1 },
+      { type: "vline", x: 4 }
+    ],
+    region: { kind: "yofx", lower: () => 0, upper: introFx, a: 1, b: 4 },
+    boardLabels: [
+      { x: 1, y: -0.32, text: "a" },
+      { x: 4, y: -0.32, text: "b" },
+      { x: 3.15, y: introFx(3.15) + 0.28, text: "y = f(x)", anchorX: "left" }
+    ],
+    bbox: [-0.7, 2.7, 5.3, -1.5],
+    limitsTex: "[a,b]",
+    teacherPrompt: "先對照長方形：高不再是常數，而是 \\(f(x)\\)。每一片厚度為 \\(\\Delta x\\) 的薄片，轉出來仍是圓盤，半徑為 \\(f(x)\\)，體積元素是 \\(\\pi[f(x)]^2\\Delta x\\)。把這些圓盤加起來，再取極限，就得到積分。",
+    studentPrompt: "想像把左邊的陰影區域繞 x 軸轉一圈。薄片的半徑隨 \\(x\\) 改變，但形狀仍然是圓盤。",
+    notes: ["圓盤面積是 \\(\\pi R^2\\)，這裡 \\(R=f(x)\\)。", "旋轉軸沿 x 方向，所以對 x 積分。"],
+    scaffold: [],
+    teacherTip: "講完這個 general case，下一題看繞 y 軸、曲線寫成 \\(x=g(y)\\) 的情況，再總結為圓盤法。"
+  },
+  {
+    id: "intro-gy",
+    mode: "intro",
+    label: "一般情況 — x = g(y)、y = c, d，繞 y 軸",
+    title: "一般情況：x = g(y) 繞 y 軸",
+    stem: "同理，若旋轉軸是 y 軸：陰影區域在曲線 \\(x=g(y)\\) 與 y 軸之間，\\(y\\) 由 \\(c\\) 到 \\(d\\)。繞 y 軸旋轉一周，薄片是垂直於 y 軸的圓盤，半徑為 \\(g(y)\\)。本頁示範形狀後，把兩種情況總結為圓盤法。",
+    hasVolume: true,
+    axis: { dir: "y", offset: 0 },
+    varName: "y",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: 0.4, b: 3.2, R: introGy, r: () => 0 }],
+    integralTex: "V=\\pi\\int_{c}^{d}\\bigl[g(y)\\bigr]^2\\,dy\\quad\\text{或}\\quad \\pi\\int_{c}^{d} x^2\\,dy",
+    sliceRadiusLabel: "g(y)",
+    curves: [
+      { type: "xofy", g: introGy, domain: [0.4, 3.2] },
+      { type: "hline", y: 0.4, domain: [0, introGy(0.4)] },
+      { type: "hline", y: 3.2, domain: [0, introGy(3.2)] }
+    ],
+    region: { kind: "xofy", inner: () => 0, outer: introGy, c: 0.4, d: 3.2 },
+    boardLabels: [
+      { x: -0.22, y: 0.4, text: "c", anchorX: "right" },
+      { x: -0.22, y: 3.2, text: "d", anchorX: "right" },
+      { x: introGy(2.15) + 0.18, y: 2.15, text: "x = g(y)", anchorX: "left" }
+    ],
+    bbox: [-2.3, 3.85, 2.3, -0.45],
+    limitsTex: "[c,d]",
+    teacherPrompt: "對 y 積分。體積元素是 \\(\\pi[g(y)]^2\\Delta y\\)。講完兩個 general case，就可以點題：上述求旋轉體體積的方法稱為圓盤法。用圓盤法時，所選的自變量（\\(x\\) 或 \\(y\\)）取決於以哪一條坐標軸為旋轉軸。",
+    studentPrompt: "對照上一題：現在軸是 y 軸，半徑改為水平距離 \\(g(y)\\)，薄片仍然是圓盤。這兩種情況合稱圓盤法。",
+    notes: [
+      "兩個公式只是變量不同：\\(V=\\pi\\int_a^b [f(x)]^2\\,dx\\) 或 \\(V=\\pi\\int_c^d [g(y)]^2\\,dy\\)。",
+      "這種方法稱為圓盤法。",
+      "所選自變量取決於以哪一條坐標軸為旋轉軸。"
+    ],
+    scaffold: [],
+    teacherTip: "到這裏可以點出名稱「圓盤法」，然後進入模式 A 的例題。"
   },
 
   // ---------- A 圓盤法 ----------
