@@ -48,6 +48,12 @@ almost("思考站 / 階段評估第2題", PI * PI, PI * PI);
 
 almost("例 10.13", 3624 * PI, 3624 * PI);
 
+const Flnsq = (y) => y * Math.log(y) ** 2 - 2 * y * Math.log(y) + 2 * y;
+almost("課堂練習 10.13(b)", PI * (Flnsq(Math.E) - Flnsq(1)), PI * (Math.E - 2));
+almost("課堂練習 10.13 下限原函數為 2", Flnsq(1), 2);
+assert.ok(findPreset("a-10.13p").partATex.includes("+C"), "課堂練習 10.13 應鎖定 (a) 原函數並加 C");
+check("課堂練習 10.13 下限是 1", findPreset("a-10.13p").pieces[0].a, 1);
+
 almost("例 10.14", (Math.exp(2) * PI) / 2 - (7 * PI) / 10, (Math.E ** 2 * PI) / 2 - 7 * PI / 10);
 
 const F1014p = (x) => x ** 5 / 5 - 2 * x ** 4 + 4 * x ** 3;
@@ -165,7 +171,7 @@ assert.equal(wrong.wrongVolumeValue, PI);
 // Required hash ids
 const required = [
   "intro-barrel", "intro-cylinder",
-  "a-10.10", "a-10.10p", "a-10.11", "a-10.12", "a-think",
+  "a-10.10", "a-10.10p", "a-10.11", "a-10.12", "a-10.13", "a-10.13p", "a-think",
   "b-wrong", "b-10.14", "b-10.14p", "b-10.15", "b-10.16",
   "c-compare", "c-10.17", "c-10.18", "d-10.19", "d-10.19a",
   "a-extra-10.10", "a-extra-10.11", "a-extra-10.12", "a-extra-10.13",

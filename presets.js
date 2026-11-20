@@ -471,6 +471,43 @@ export const PRESETS = [
     ],
     teacherTip: "此題以視覺為主，終值已鎖定。不要在頁面上展開換元步驟。"
   },
+
+  {
+    id: "a-10.13p",
+    mode: "A",
+    label: "課堂練習 10.13 — y = eˣ、y 軸與 y = e，繞 y 軸",
+    title: "課堂練習 10.13",
+    stem: "(a) 運用分部積分法，求 \\(\\displaystyle\\int(\\ln t)^{2}\\,dt\\)。(b) 設 \\(\\Gamma\\) 為 \\(y=e^{x}\\)，其中 \\(0\\le x\\le 1\\)。由 \\(\\Gamma\\)、y 軸及直線 \\(y=e\\) 所圍的區域，繞 y 軸旋轉一周。本頁鎖定 (a) 的原函數與 (b) 的體積，不把計算做成計算機。",
+    hasVolume: true,
+    axis: { dir: "y", offset: 0 },
+    varName: "y",
+    hollow: false,
+    turn: 1,
+    profileSign: 1,
+    pieces: [{ a: 1, b: Math.E, R: (y) => Math.log(y), r: () => 0 }],
+    volumeTex: "\\pi(e-2)",
+    volumeValue: PI * (Math.E - 2),
+    integralTex: "V=\\pi\\int_{1}^{e}(\\ln y)^{2}\\,dy=\\pi(e-2)",
+    partATex: "\\int(\\ln t)^{2}\\,dt=t(\\ln t)^{2}-2t\\ln t+2t+C",
+    curves: [
+      { type: "yofx", f: (x) => Math.exp(x), domain: [0, 1.15] },
+      { type: "hline", y: Math.E }
+    ],
+    region: { kind: "xofy", inner: () => 0, outer: (y) => Math.log(y), c: 1, d: Math.E },
+    bbox: [-0.55, 3.25, 1.7, -0.7],
+    limitsTex: "[1,e]",
+    teacherPrompt: "這題可作課閘：請學生先完成 (a)，再把 (b) 改成對 y 積分。(a) 原函數已鎖定，記得加 \\(C\\)。(b) 在 \\(x=0\\) 時 \\(y=1\\)，所以 y 從 1 到 \\(e\\)，半徑是 \\(\\ln y\\)。",
+    studentPrompt: "先自行完成 (a)，再把 (b) 改成對 y 積分，核對上下限與半徑。",
+    notes: ["\\(x=0\\) 時 \\(y=1\\)，下限不是 0。", "繞 y 軸，半徑是 \\(\\ln y\\)。", "不定積分必須加 \\(C\\)。"],
+    scaffold: [
+      { q: "旋轉軸是哪一條？", options: ["y 軸", "x 軸", "y=e"], answer: 0 },
+      { q: "轉出來是實心還是空心？", options: ["實心圓盤", "空心圓環"], answer: 0 },
+      { q: "應對哪個變量積分？", options: ["對 y 積分", "對 x 積分"], answer: 0 },
+      { q: "半徑是什麼？", options: ["\\(R=\\ln y\\)", "\\(R=e^{y}\\)", "\\(R=y\\)"], answer: 0 },
+      { q: "y 的上下限？", options: ["\\(1\\) 到 \\(e\\)", "\\(0\\) 到 \\(e\\)", "\\(0\\) 到 \\(1\\)"], answer: 0, explain: "曲線與 y 軸交於 (0, 1)，下限是 1 不是 0。" }
+    ],
+    teacherTip: "課堂練習當作課閘：先隱藏積分和答案。(a)、(b) 終值已鎖定。y 的下限是 1。"
+  },
   {
     id: "a-extra-10.13",
     mode: "A",
